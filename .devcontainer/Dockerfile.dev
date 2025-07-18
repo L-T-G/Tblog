@@ -1,0 +1,17 @@
+FROM mcr.microsoft.com/devcontainers/typescript-node:1-22-bookworm
+# 挂上宿主机代理
+ENV http_proxy=http://192.168.1.7:7890
+ENV https_proxy=http://192.168.1.7:7890
+ENV no_proxy='.huaweicloud.com,.io.plus,.inner,.cn,.svc,.local,localhost,127.0.0.1'
+
+
+COPY  .devcontainer/install_env.sh  .
+
+# COPY . /app/
+
+# RUN yarn install
+RUN pnpm config set registry http://mirrors.cloud.tencent.com/npm/
+
+RUN --mount=type=cache,target=/root/.cache \
+    --mount=type=cache,target=/var/cache/ \
+    sh ./install_env.sh
